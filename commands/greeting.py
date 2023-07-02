@@ -24,6 +24,11 @@ class Greeting(commands.Cog):
     async def goodbye(self, ctx):
         channel = self.client.get_channel(DISCORD_SERVER_ID)
         await channel.send(f'I hope to see you again {ctx.author.mention}!')
+    
+    @commands.command(aliases=[ily])
+    async def iloveyou(self, ctx):
+        channel = self.client.get_channel(DISCORD_SERVER_ID)
+        await channel.send(f'I love you too, {ctx.author.mention} <3')
 
 async def setup(client):
     await client.add_cog(Greeting(client))
