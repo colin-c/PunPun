@@ -8,7 +8,8 @@ b!hello *(response with a welcome greeting)* <br>
 b!goodbye *(signals user goodbye)*
  
 #### Memes
-b!ily || b!iloveyou *(sends image and message of i love you)*
+b!ily || b!iloveyou *(sends image and message of i love you)* <br>
+b!exercise *(sends image of running)*
 
 #### FortuneCookie
 b!fc || b!fortuneCookie *(sends random fate message)*
