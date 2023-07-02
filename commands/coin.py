@@ -24,11 +24,11 @@ class Coin(commands.Cog):
         
         if (result == "Head"):
             head_message = discord.Embed(title="HEAD", color=discord.Color.green())
-            head_message.set_image(url="https://ih1.redbubble.net/image.2982672877.3829/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg")
+            head_message.set_image(url="https://hips.hearstapps.com/digitalspyuk.cdnds.net/16/28/1468204896-pikachu-caterpie.gif?resize=980:*")
             await ctx.send(embed = head_message)
         else:
             tail_message = discord.Embed(title="TAIL", color=discord.Color.red())
-            tail_message.set_image(url="https://i.kym-cdn.com/photos/images/original/000/996/823/191.jpg")
+            tail_message.set_image(url="https://media.tenor.com/vb0GTerCLNkAAAAC/cute-anime-cat-gif.gif")
             await ctx.send(embed = tail_message)
 
 async def setup(client):
