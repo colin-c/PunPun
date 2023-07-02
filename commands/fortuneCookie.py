@@ -8,7 +8,7 @@ load_dotenv()
 
 DISCORD_SERVER_ID = int(os.getenv("DISCORD_SERVER_ID"))
 
-## this class contains all message/greetings
+## this class contains all FortuneCookie commands
 class FortuneCookie(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -17,8 +17,8 @@ class FortuneCookie(commands.Cog):
     async def on_ready(self):
         print("Fortune Cookie File Loaded")
     
-    @commands.command()
-    async def fc(self, ctx):
+    @commands.command(aliases=["fc"])
+    async def fortuneCookie(self, ctx):
         channel = self.client.get_channel(DISCORD_SERVER_ID)
         with open("commands/fcmsg.txt", "r") as f:
             randomResponses = f.readlines()
