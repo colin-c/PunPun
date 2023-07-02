@@ -6,6 +6,7 @@ load_dotenv()
 
 DISCORD_SERVER_ID = int(os.getenv("DISCORD_SERVER_ID"))
 
+## this class contains ping related
 class Ping(commands.Cog):
     def __init__(self, client):
         self.client = client
