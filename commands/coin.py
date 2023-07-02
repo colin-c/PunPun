@@ -22,7 +22,6 @@ class Coin(commands.Cog):
         channel = self.client.get_channel(DISCORD_SERVER_ID)
         result = random.choice(["Head", "Tail"])
         await channel.send(f'{result}')
-    
 
 async def setup(client):
     await client.add_cog(Coin(client))
