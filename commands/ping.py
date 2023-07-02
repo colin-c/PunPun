@@ -22,4 +22,4 @@ class Ping(commands.Cog):
         await channel.send(f'Ping is {bot_latency} ms, {ctx.author.mention}!')
 
 async def setup(client):
-    await client.add_cog(Pring(client))
+    await client.add_cog(Ping(client))
