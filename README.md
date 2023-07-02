@@ -8,10 +8,10 @@ b!hello *(response with a welcome greeting)*
 b!goodbye *(signals user goodbye)*
  
 #### Memes
-b!ily *or* b!iloveyou *(sends image and message of i love you)*
+b!ily || b!iloveyou *(sends image and message of i love you)*
 
 #### FortuneCookie
-b!fc *or* b!fortuneCookie *(sends random fate message)*
+b!fc || b!fortuneCookie *(sends random fate message)*
 
 #### Music
 b! play *(music bot joins and plays music // if music already playing, add to queue)*
