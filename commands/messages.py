@@ -6,14 +6,14 @@ load_dotenv()
 
 DISCORD_SERVER_ID = int(os.getenv("DISCORD_SERVER_ID"))
 
-## this class contains all message/greetings
-class Greeting(commands.Cog):
+## this class contains all Messages
+class Messages(commands.Cog):
     def __init__(self, client):
         self.client = client
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Greeting File Loaded")
+        print("Messages File Loaded")
 
     @commands.command()
     async def hello(self, ctx):
@@ -31,4 +31,4 @@ class Greeting(commands.Cog):
         await channel.send(f'I love you too, {ctx.author.mention} <3')
 
 async def setup(client):
-    await client.add_cog(Greeting(client))
+    await client.add_cog(Messages(client))
