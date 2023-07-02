@@ -7,6 +7,9 @@
 #     #channel = client.get_channel(1025140342263119974)
 #     #await channel.send('testing')
 #     print(message.author, message.content, message.channel.id)
+#
+# pip install python-dotenv
+#
 
 import discord
 import os
