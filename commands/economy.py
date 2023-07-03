@@ -67,6 +67,7 @@ class Economy(commands.Cog):
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)
+
         elif (curr_bal < new_bal):
             eco_embed = discord.Embed(title="Nice One! - Free Money $$$", description="You were able to slip through their wallet as you passed by that innocent civilian", color=discord.Color.green())
             eco_embed.add_field(name="New Balance:", value=f"${new_bal}", inline=False)
@@ -77,6 +78,7 @@ class Economy(commands.Cog):
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)
+
         elif (curr_bal == new_bal):
             eco_embed = discord.Embed(title="Oh well!", description="It seems like nothing happened today", color=discord.Color.yellow())
             eco_embed.set_footer(text="Try again later?", icon_url=None)
@@ -90,6 +92,7 @@ class Economy(commands.Cog):
 
 
     ## daily work
+    @commands.cooldown(1, 86400, commands.BucketType.user)
     @commands.command(aliases=["daily"])
     async def work(self, ctx):
         with open("commands/eco.json", "r") as f:
@@ -103,16 +106,31 @@ class Economy(commands.Cog):
                 json.dump(user_eco, f, indent=4)   
         
         curr_bal = user_eco[str(ctx.author.id)]["Balance"]
-        income = random.randint(140, 180)
-        new_bal = curr_bal + income
+        amount = random.randint(140, 180)
+        new_bal = curr_bal + amount
 
         eco_embed = discord.Embed(title=f"{ctx.author.name} Completed Work Today", description="Congrats you have completed your 8 hour shift. You deserve a break!", color=discord.Color.blue())
-        eco_embed.add_field(name="Income Today:", value=f"${income}", inline=False)
+        eco_embed.add_field(name="Income Today:", value=f"${amount}", inline=False)
         eco_embed.add_field(name="New Balance:", value=f"${new_bal}", inline=False)
         eco_embed.set_footer(text="The rest of the day is up to you")
-        
-        await ctx.send(embed=eco_embed)
 
+        await ctx.send(embed=eco_embed)
+        user_eco[str(ctx.author.id)]["Balance"] += amount
+
+        with open("commands/eco.json", "w") as f:
+            json.dump(user_eco, f, indent=4)
+
+    @work.error
+    async def work_error(self, ctx, error):
+         if isinstance(error, commands.CommandOnCooldown):
+
+            seconds = round(error.retry_after,0) % (24 * 3600)
+            hours = seconds//3600
+            seconds %= 3600
+            minutes = seconds // 60
+            seconds %= 60
+            
+            await ctx.send(f'`This command is on cooldown, you can use it in {hours} hours, {minutes} minutes, {seconds} seconds.`')
 
 
 async def setup(client):
