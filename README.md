@@ -10,6 +10,7 @@ b!goodbye *(signals user goodbye)*
 #### Memes
 b!ily || b!iloveyou *(sends image and message of i love you)* <br>
 b!exercise *(sends image of running)*
+b!bonk *(Bonk someone on the head)*
 
 #### FortuneCookie
 b!fc || b!fortuneCookie *(sends random fate message)*
