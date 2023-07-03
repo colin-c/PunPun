@@ -18,10 +18,10 @@ class Economy(commands.Cog):
         with open("commands/eco.json", "r") as f:
             user_eco = json.load(f)
 
-        ## if member doesn't exist, creates a new member
+        ## check one's own balance
         if member is None:
             member = ctx.author
-        ## otherwise, connect member with old profile again
+        ## otherwise, the balance of the 'member' selected
         elif member is not None:
             member = member
 
