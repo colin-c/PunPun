@@ -20,7 +20,7 @@ class FortuneCookie(commands.Cog):
 
     @commands.command(aliases=["fc"])
     async def fortuneCookie(self, ctx):
-        result = random.choice(["Good", "Bad"])
+        result = random.choice(["Good", "Bad", "Love"])
         
         if (result == "Good"):
             with open("commands/fcGood.txt", "r") as f:
@@ -36,15 +36,15 @@ class FortuneCookie(commands.Cog):
 
             fcBad_message = discord.Embed(title="Bad", description=response, color=discord.Color.red())
             await ctx.send(embed = fcBad_message)
-    
-    # @commands.command(aliases=["fc"])
-    # async def fortuneCookie(self, ctx):
-    #     channel = self.client.get_channel(DISCORD_SERVER_ID)
+        elif (result == "Love"):
+            with open("commands/fcLove.txt", "r") as f:
+                randomResponses = f.readlines()
+                response = random.choice(randomResponses)
 
-    #     with open("commands/fcmsg.txt", "r") as f:
-    #         randomResponses = f.readlines()
-    #         response = random.choice(randomResponses)
-    #     await channel.send(f'`{response}`')
+            fcLove_message = discord.Embed(title="Love", description=response, color=discord.Color.pink())
+            await ctx.send(embed = fcLove_message)
+    
+
 
 async def setup(client):
     await client.add_cog(FortuneCookie(client))
