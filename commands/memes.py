@@ -23,6 +23,12 @@ class Memes(commands.Cog):
         
         await ctx.send(embed = exercise_message)
 
+    @commands.command()
+    async def bonk(self, ctx):
+        bonk_message = discord.Embed(title=f"**Bonk!**", color=discord.Color.orange())
+        bonk_message.set_image(url="https://media.tenor.com/CrmEU2LKix8AAAAC/anime-bonk.gif")
+
+        await ctx.send(embed = bonk_message)
 
 async def setup(client):
     await client.add_cog(Memes(client))
