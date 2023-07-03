@@ -33,7 +33,7 @@ class Economy(commands.Cog):
                 json.dump(user_eco, f, indent=4)
 
         eco_embed = discord.Embed(title=f"{member.name}'s Balance", description="The current balance", color=discord.Color.green())
-        #eco_embed.set_thumbnail(url=ctx.message.author.avatar_url)
+        eco_embed.set_thumbnail(url=ctx.author.avatar_url)
         eco_embed.add_field(name="Current Balance:", value=f"${user_eco[str(member.id)]['Balance']}")
 
         await ctx.send(embed=eco_embed)
@@ -88,10 +88,9 @@ class Economy(commands.Cog):
     @pinpocket.error
     async def pinpocket_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(f'`This command is on cooldown, you can use it in {round(error.retry_after, 0)} seconds`')
+            await ctx.send(f'`You are tired... you can do it again in {round(error.retry_after, 0)} seconds`')
 
-
-    ## daily work
+## daily work
     @commands.cooldown(1, 86400, commands.BucketType.user)
     @commands.command(aliases=["daily"])
     async def work(self, ctx):
@@ -109,10 +108,10 @@ class Economy(commands.Cog):
         amount = random.randint(140, 180)
         new_bal = curr_bal + amount
 
-        eco_embed = discord.Embed(title=f"{ctx.author.name} Completed Work Today", description="Congrats you have completed your 8 hour shift. You deserve a break!", color=discord.Color.blue())
+        eco_embed = discord.Embed(title=f"{ctx.author.name} Completed Work Today!", description="Congrats, you have completed your 8 hour shift! You deserve a break!", color=discord.Color.blue())
         eco_embed.add_field(name="Income Today:", value=f"${amount}", inline=False)
         eco_embed.add_field(name="New Balance:", value=f"${new_bal}", inline=False)
-        eco_embed.set_footer(text="The rest of the day is up to you")
+        eco_embed.set_footer(text="The rest of the day is up to you!!")
 
         await ctx.send(embed=eco_embed)
         user_eco[str(ctx.author.id)]["Balance"] += amount
@@ -130,7 +129,7 @@ class Economy(commands.Cog):
             minutes = seconds // 60
             seconds %= 60
             
-            await ctx.send(f'`This command is on cooldown, you can use it in {hours} hours, {minutes} minutes, {seconds} seconds.`')
+            await ctx.send(f'`You have already worked your daily shift, come back in {hours} hours, {minutes} minutes, {seconds} seconds.`')
 
 
 async def setup(client):
