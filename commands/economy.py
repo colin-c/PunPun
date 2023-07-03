@@ -12,7 +12,7 @@ class Economy(commands.Cog):
     async def on_ready(self):
         print("Economy File Loaded")
 
-
+## checks balance
     @commands.command(aliases=["bal"])
     async def balance(self, ctx, member: discord.Member=None):
         with open("commands/eco.json", "r") as f:
@@ -38,6 +38,8 @@ class Economy(commands.Cog):
 
         await ctx.send(embed=eco_embed)
 
+
+## pinpocket others
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(aliases=["pocket"])
     async def pinpocket(self, ctx):
@@ -85,6 +87,9 @@ class Economy(commands.Cog):
     async def pinpocket_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f'`This command is on cooldown, you can use it in {round(error.retry_after, 0)} seconds`')
+
+
+## daily work
 
 async def setup(client):
     await client.add_cog(Economy(client))
