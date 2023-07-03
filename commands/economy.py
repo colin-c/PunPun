@@ -89,7 +89,31 @@ class Economy(commands.Cog):
             await ctx.send(f'`This command is on cooldown, you can use it in {round(error.retry_after, 0)} seconds`')
 
 
-## daily work
+    ## daily work
+    @commands.command(aliases=["daily"])
+    async def work(self, ctx):
+        with open("commands/eco.json", "r") as f:
+            user_eco = json.load(f)
+
+        if str(ctx.author.id) not in user_eco:
+            user_eco[str(ctx.author.id)] = {}
+            user_eco[str(ctx.author.id)]["Balance"] = 100
+
+            with open("commands/eco.json", "w") as f:
+                json.dump(user_eco, f, indent=4)   
+        
+        curr_bal = user_eco[str(ctx.author.id)]["Balance"]
+        income = random.randint(140, 180)
+        new_bal = curr_bal + income
+
+        eco_embed = discord.Embed(title=f"{ctx.author.name} Completed Work Today", description="Congrats you have completed your 8 hour shift. You deserve a break!", color=discord.Color.blue())
+        eco_embed.add_field(name="Income Today:", value=f"${income}", inline=False)
+        eco_embed.add_field(name="New Balance:", value=f"${new_bal}", inline=False)
+        eco_embed.set_footer(text="The rest of the day is up to you")
+        
+        await ctx.send(embed=eco_embed)
+
+
 
 async def setup(client):
     await client.add_cog(Economy(client))
