@@ -14,6 +14,12 @@ class Gacha(commands.Cog):
         print("Gacha File Loaded")
 
 ## rolling for characters
+
+## need to complete still:
+##  deducting from user's balance
+##  adding it to user's json
+##  cooldown msg
+
     # @commands.cooldown(1, 1800, commands.BucketType.user)
     @commands.command()
     async def roll(self, ctx):
@@ -39,24 +45,41 @@ class Gacha(commands.Cog):
             await ctx.send(embed=eco_embed)
         
         else:
-            # characterTiers = ["S", "A", "B"]
-            # result = random.choice(characterTiers, 1, weight=[10, 40, 50])
-            if ("S" == "S"):
-                with open("commands/characters/sTier.csv", "r") as f:
+            characterTiers = ["S", "A", "B"]
+            probability = [0.1, 0.4, 0.5]
+            result = random.choices(characterTiers, probability)
+            if (result[0] == "S"):
 
-                    #fix this later 
-                    totalLines = sum(1 for row in f)
-                    line = random.randint(0,totalLines)
-                    f.seek(line)
-                    f.readline()
-                    chosenCharacter = f.readline().split(",")
-                    print(chosenCharacter)
+                with open("commands/characters/sTier.txt", "r") as f:
+                    randomCharacter = f.readlines()
+                    chosenCharacter = random.choice(randomCharacter).split(",")
 
                 roll_message = discord.Embed(title=f"S Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.yellow())
                 roll_message.set_image(url=f"{chosenCharacter[1]}")
 
                 await ctx.send(embed = roll_message)
 
+            elif (result[0] == "A"):
+
+                with open("commands/characters/aTier.txt", "r") as f:
+                    randomCharacter = f.readlines()
+                    chosenCharacter = random.choice(randomCharacter).split(",")
+
+                roll_message = discord.Embed(title=f"A Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.purple())
+                roll_message.set_image(url=f"{chosenCharacter[1]}")
+
+                await ctx.send(embed = roll_message)
+            
+            else:
+                with open("commands/characters/bTier.txt", "r") as f:
+                    randomCharacter = f.readlines()
+                    chosenCharacter = random.choice(randomCharacter).split(",")
+
+                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
+                roll_message.set_image(url=f"{chosenCharacter[1]}")
+
+                await ctx.send(embed = roll_message)
+                
 async def setup(client):
     await client.add_cog(Gacha(client))
                         
