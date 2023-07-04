@@ -33,7 +33,7 @@ class Economy(commands.Cog):
                 json.dump(user_eco, f, indent=4)
 
         eco_embed = discord.Embed(title=f"{member.name}'s Balance", description="The current balance", color=discord.Color.green())
-        eco_embed.set_thumbnail(url=ctx.author.avatar_url)
+        # eco_embed.set_thumbnail(url=ctx.author.avatar_url)
         eco_embed.add_field(name="Current Balance:", value=f"${user_eco[str(member.id)]['Balance']}")
 
         await ctx.send(embed=eco_embed)
