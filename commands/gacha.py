@@ -16,11 +16,9 @@ class Gacha(commands.Cog):
 ## rolling for characters
 
 ## need to complete still:
-##  deducting from user's balance
 ##  adding it to user's json
-##  cooldown msg
 
-    # @commands.cooldown(1, 1800, commands.BucketType.user)
+    @commands.cooldown(1, 1800, commands.BucketType.user)
     @commands.command()
     async def roll(self, ctx):
         with open("commands/eco.json", "r") as f:
@@ -59,6 +57,17 @@ class Gacha(commands.Cog):
 
                 await ctx.send(embed = roll_message)
 
+                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
+                roll_message.set_image(url=f"{chosenCharacter[1]}")
+                roll_message.set_footer(text=f"New Balance: ${new_bal}")
+
+                await ctx.send(embed = roll_message)
+
+                user_eco[str(ctx.author.id)]["Balance"] -= 300
+                with open("commands/eco.json", "w") as f:
+                    json.dump(user_eco, f, indent=4)
+
+
             elif (result[0] == "A"):
 
                 with open("commands/characters/aTier.txt", "r") as f:
@@ -69,6 +78,17 @@ class Gacha(commands.Cog):
                 roll_message.set_image(url=f"{chosenCharacter[1]}")
 
                 await ctx.send(embed = roll_message)
+
+                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
+                roll_message.set_image(url=f"{chosenCharacter[1]}")
+                roll_message.set_footer(text=f"New Balance: ${new_bal}")
+
+                await ctx.send(embed = roll_message)
+
+                user_eco[str(ctx.author.id)]["Balance"] -= 300
+                with open("commands/eco.json", "w") as f:
+                    json.dump(user_eco, f, indent=4)
+
             
             else:
                 with open("commands/characters/bTier.txt", "r") as f:
@@ -77,9 +97,27 @@ class Gacha(commands.Cog):
 
                 roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
                 roll_message.set_image(url=f"{chosenCharacter[1]}")
+                roll_message.set_footer(text=f"New Balance: ${new_bal}")
 
                 await ctx.send(embed = roll_message)
-                
+
+                user_eco[str(ctx.author.id)]["Balance"] -= 300
+                with open("commands/eco.json", "w") as f:
+                    json.dump(user_eco, f, indent=4)
+                    
+    
+    @roll.error
+    async def roll_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            
+            seconds = round(error.retry_after,0) % (24 * 3600)
+            hours = seconds//3600
+            seconds %= 3600
+            minutes = seconds // 60
+            seconds %= 60
+
+            await ctx.send(f'`You must wait {minutes} minutes before rolling again.`')
+
 async def setup(client):
     await client.add_cog(Gacha(client))
                         
