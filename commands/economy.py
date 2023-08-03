@@ -26,8 +26,9 @@ class Economy(commands.Cog):
             member = member
 
         if str(member.id) not in user_eco:
-            user_eco[str(member.id)] = {}
-            user_eco[str(member.id)]["Balance"] = 100
+            user_eco[str(ctx.author.id)] = {}
+            user_eco[str(ctx.author.id)]["Balance"] = 100
+            user_eco[str(ctx.author.id)]["Inventory"] = []
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)
@@ -49,6 +50,7 @@ class Economy(commands.Cog):
         if str(ctx.author.id) not in user_eco:
             user_eco[str(ctx.author.id)] = {}
             user_eco[str(ctx.author.id)]["Balance"] = 100
+            user_eco[str(ctx.author.id)]["Inventory"] = []
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)
@@ -100,6 +102,7 @@ class Economy(commands.Cog):
         if str(ctx.author.id) not in user_eco:
             user_eco[str(ctx.author.id)] = {}
             user_eco[str(ctx.author.id)]["Balance"] = 100
+            user_eco[str(ctx.author.id)]["Inventory"] = []
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)   

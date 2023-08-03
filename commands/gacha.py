@@ -13,11 +13,7 @@ class Gacha(commands.Cog):
     async def on_ready(self):
         print("Gacha File Loaded")
 
-## rolling for characters
-
-## need to complete still:
-##  adding it to user's json
-
+    ## rolling for characters
     @commands.cooldown(1, 1800, commands.BucketType.user)
     @commands.command()
     async def roll(self, ctx):
@@ -27,6 +23,7 @@ class Gacha(commands.Cog):
         if str(ctx.author.id) not in user_eco:
             user_eco[str(ctx.author.id)] = {}
             user_eco[str(ctx.author.id)]["Balance"] = 100
+            user_eco[str(ctx.author.id)]["Inventory"] = []
 
             with open("commands/eco.json", "w") as f:
                 json.dump(user_eco, f, indent=4)  
@@ -52,20 +49,31 @@ class Gacha(commands.Cog):
                     randomCharacter = f.readlines()
                     chosenCharacter = random.choice(randomCharacter).split(",")
 
-                roll_message = discord.Embed(title=f"S Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.yellow())
-                roll_message.set_image(url=f"{chosenCharacter[1]}")
+                print(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"])
+                # if you own the character
+                if(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"]):
 
-                await ctx.send(embed = roll_message)
+                    roll_message = discord.Embed(title=f"S Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.yellow())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"You already own this character! New Balance: ${new_bal + 150}")
+                    await ctx.send(embed = roll_message)
 
-                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
-                roll_message.set_image(url=f"{chosenCharacter[1]}")
-                roll_message.set_footer(text=f"New Balance: ${new_bal}")
+                    user_eco[str(ctx.author.id)]["Balance"] -= 150
 
-                await ctx.send(embed = roll_message)
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
 
-                user_eco[str(ctx.author.id)]["Balance"] -= 300
-                with open("commands/eco.json", "w") as f:
-                    json.dump(user_eco, f, indent=4)
+                else: 
+                    roll_message = discord.Embed(title=f"S Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.yellow())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"New Balance: ${new_bal}")
+                    await ctx.send(embed = roll_message)
+
+                    user_eco[str(ctx.author.id)]["Balance"] -= 300
+                    user_eco[str(ctx.author.id)]["Inventory"].append(chosenCharacter[0])
+
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
 
 
             elif (result[0] == "A"):
@@ -74,20 +82,30 @@ class Gacha(commands.Cog):
                     randomCharacter = f.readlines()
                     chosenCharacter = random.choice(randomCharacter).split(",")
 
-                roll_message = discord.Embed(title=f"A Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.purple())
-                roll_message.set_image(url=f"{chosenCharacter[1]}")
+                # if you own the character
+                if(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"]):
 
-                await ctx.send(embed = roll_message)
+                    roll_message = discord.Embed(title=f"A Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.purple())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"You already own this character! New Balance: ${new_bal + 150}")
+                    await ctx.send(embed = roll_message)
 
-                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
-                roll_message.set_image(url=f"{chosenCharacter[1]}")
-                roll_message.set_footer(text=f"New Balance: ${new_bal}")
+                    user_eco[str(ctx.author.id)]["Balance"] -= 150
 
-                await ctx.send(embed = roll_message)
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
+                
+                else:
+                    roll_message = discord.Embed(title=f"A Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.purple())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"New Balance: ${new_bal}")
+                    await ctx.send(embed = roll_message)
 
-                user_eco[str(ctx.author.id)]["Balance"] -= 300
-                with open("commands/eco.json", "w") as f:
-                    json.dump(user_eco, f, indent=4)
+                    user_eco[str(ctx.author.id)]["Balance"] -= 300
+                    user_eco[str(ctx.author.id)]["Inventory"].append(chosenCharacter[0])
+
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
 
             
             else:
@@ -95,15 +113,30 @@ class Gacha(commands.Cog):
                     randomCharacter = f.readlines()
                     chosenCharacter = random.choice(randomCharacter).split(",")
 
-                roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
-                roll_message.set_image(url=f"{chosenCharacter[1]}")
-                roll_message.set_footer(text=f"New Balance: ${new_bal}")
+                if(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"]):
 
-                await ctx.send(embed = roll_message)
+                    roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"You already own this character! New Balance: ${new_bal + 150}")
+                    await ctx.send(embed = roll_message)
 
-                user_eco[str(ctx.author.id)]["Balance"] -= 300
-                with open("commands/eco.json", "w") as f:
-                    json.dump(user_eco, f, indent=4)
+                    user_eco[str(ctx.author.id)]["Balance"] -= 150
+
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
+
+                else: 
+                    roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
+                    roll_message.set_image(url=f"{chosenCharacter[1]}")
+                    roll_message.set_footer(text=f"New Balance: ${new_bal}")
+
+                    await ctx.send(embed = roll_message)
+
+                    user_eco[str(ctx.author.id)]["Balance"] -= 300
+                    user_eco[str(ctx.author.id)]["Inventory"].append(chosenCharacter[0])
+
+                    with open("commands/eco.json", "w") as f:
+                        json.dump(user_eco, f, indent=4)
                     
     
     @roll.error

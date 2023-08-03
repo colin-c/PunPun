@@ -1,8 +1,9 @@
 {
-    "279340114855854080": {
-        "Balance": 316
-    },
     "290757108440498176": {
-        "Balance": 151
+        "Balance": 550,
+        "Inventory": [
+            "Makoto Niijima",
+            "Kazuya Kinoshita"
+        ]
     }
 }
