@@ -49,7 +49,6 @@ class Gacha(commands.Cog):
                     randomCharacter = f.readlines()
                     chosenCharacter = random.choice(randomCharacter).split(",")
 
-                print(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"])
                 # if you own the character
                 if(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"]):
 
@@ -113,6 +112,7 @@ class Gacha(commands.Cog):
                     randomCharacter = f.readlines()
                     chosenCharacter = random.choice(randomCharacter).split(",")
 
+                # if you own the character
                 if(chosenCharacter[0] in user_eco[str(ctx.author.id)]["Inventory"]):
 
                     roll_message = discord.Embed(title=f"B Tier Pull!", description=f"Congrats, you have pulled {chosenCharacter[0]}!", color=discord.Color.blue())
