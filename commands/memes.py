@@ -7,7 +7,7 @@ class Memes(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Messages File Loaded")
+        print("Meme File Loaded")
 
     @commands.command(aliases=["ily"])
     async def iloveyou(self, ctx):

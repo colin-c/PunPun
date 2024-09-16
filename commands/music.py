@@ -1,46 +1,22 @@
 import discord
-import os
-import base64
 import json
-from requests import post
+import random
+import yt_dlp
+import asyncio
 from discord.ext import commands
-from dotenv import load_dotenv
+from discord.ext.commands import cooldown, BucketType
 
+FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+                  'options': '-vn'}
+YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist' : True}
 
-load_dotenv()
-
-# important credentials accessing spotify API
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
-
-# get the access token from spotify
-def get_token():
-
-    auth_string = client_id + ":" + client_secret
-    auth_bytes = auth_string.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
-    url = "https://accounts.spotify.com/api/token"
-
-    header = {
-        "Authorization": "Basic " + auth_base64,
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-
-    data = {"grant_type": "client_credentials"}
-    result = post(url,headers=header, data=data)
-    json_result = json.loads(result.content)
-    token = json_result["access_token"]
-
-    return token
-
-# authorization header request
-def get_auth_header(token):
-    return {"Authorization": "Bearer " + token}
 
 # class contains all music related features
 class Music(commands.Cog):
+    
     def __init__(self, client):
         self.client = client
+        self.queue = []
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -69,9 +45,48 @@ class Music(commands.Cog):
         else:
             await ctx.send(f'`Pun Pun is not in a voice channel`')
 
+    # bot plays music
     @commands.command()
-    async def play(self, ctx, arg1):
-        token = get_token()
+    async def play(self, ctx, *, search):
+        channel = ctx.author.voice.channel if ctx.author.voice else None
+        if not channel:
+            await ctx.send(f'`You are not in a voice channel right now. You must be in a voice channel to use this command`')
+        
+        if not ctx.voice_client:
+            await channel.connect()
+        
+        # uses the user input to gather the information it needs
+        async with ctx.typing():
+            with yt_dlp.YoutubeDL(YDL_OPTIONS) as ydl:
+                info = ydl.extract_info(f"ytsearch:{search}", download=False)
+                if 'entries' in info:
+                    info = info['entries'][0]
+                url = info['url']
+                title = info['title'] 
+                self.queue.append((url, title))
+                await ctx.send(f'`Added to queue: **{title}**`')
+
+        if not ctx.voice_client.is_playing():
+            await self.play_next(ctx)
+    
+    # allow the bot to play the music
+    async def play_next(self, ctx):
+        if self.queue:
+            url, title = self. queue.pop(0)
+            source = await discord.FFmpegOpusAudio.from_probe(url, **FFMPEG_OPTIONS)
+            ctx.voice_client.play(source, after=lambda _:self.client.loop.create_task(self.play_next(ctx)))
+            await ctx.send(f'`Now playing **{title}**`')
+        
+        elif not ctx.voice_client.is_playing():
+            await ctx.send(f'`Queue is empty!`')
+    
+    # skip to next song in queue
+    @commands.command()
+    async def skip(self, ctx):
+        if ctx.voice_client and ctx.voice_client.is_playing():
+            ctx.voice_client.stop()
+            await ctx.send(f'`Skipped`')
+
 
 async def setup(client):
     await client.add_cog(Music(client))

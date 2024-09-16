@@ -1,7 +1,6 @@
 import discord
 import json
 import random
-import csv
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
 
