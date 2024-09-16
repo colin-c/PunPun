@@ -31,7 +31,7 @@ b!roll *(Spend $300 of the user balance to roll for a character)*
 
 ### GameTrivia
 b!trivia *(gives users a game trivia)* <br>
-b!answer *(all the user to answer the game trivia)*
+b!answer *(allows the user to answer the game trivia)*
 
 ### QuoteGenerator
 b!getQuote *(gives user a random quote)* <br>
