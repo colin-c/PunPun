@@ -1,0 +1,4 @@
+yfinance
+yt-dlp
+PyNaCl
+davey

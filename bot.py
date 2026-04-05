@@ -26,11 +26,19 @@ intents = discord.Intents.all()
 intents.message_content = True
 intents.voice_states = True
 
-client = commands.Bot(command_prefix='b!', intents=intents)
+client = commands.Bot(command_prefix='!pp', intents=intents, strip_after_prefix=True)
 
 @client.event
 async def on_ready():
     print('Connection is Sucessful!')
+
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+
+    await ctx.send(f"```command error: {error}```")
 
 async def load():
     for filename in os.listdir("./commands"):

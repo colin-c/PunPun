@@ -1,43 +1,36 @@
 # PunPun
 
-A discord bot that can perform multiple different tasks.
-
-## Requirements
-To run this project, you need the following Python packages:
-+ **discord.py**: main library used for interacting with the Discord API
-+ **yt_dlp**: allows your bot to download or stream media from YouTube
-+ **FFMPEG**: used to process the audio streams from YouTube, converting them into a format that Discord can play
+A Discord bot with a simple `!pp` command prefix.
 
 ## Features
-#### Messages
-b!hello *(response with a welcome greeting)* <br>
-b!goodbye *(signals user goodbye)*
- 
-#### Memes
-b!ily || b!iloveyou *(sends image and message of i love you)* <br>
-b!exercise *(sends image of running)*
-b!bonk *(Bonk someone on the head)*
+#### Hello
+!pp hello *(returns `hi @user` inside a code block box)*
 
-#### FortuneCookie
-b!fc || b!fortuneCookie *(sends random fate message)*
+#### Choose
+!pp riot *(chooses between League or Valorant)*
 
-#### Economy
-b!bal $<user>$ || b!balance $<user>$ *(check the balance of the user)* <br>
-b!pinpocket || b!pocket *(pocket a stranger for money)* <br>
-b!daily || b!work *(work for an income)* s
+#### Coin
+!pp coin *(flips a coin and returns Heads or Tails)*
 
-### Gacha
-b!roll *(Spend $300 of the user balance to roll for a character)*
+#### Slur Tracker
+!pp @user slur *(increments that user's count by 1 and shows the total)*
+!pp @user slur count *(shows the current total without incrementing)*
+!pp @user slur reset *(sets the total to 0)*
+!pp @user slur minus {value} *(subtracts a value, default 1, never below 0)*
 
-### GameTrivia
-b!trivia *(gives users a game trivia)* <br>
-b!answer *(allows the user to answer the game trivia)*
-
-### QuoteGenerator
-b!getQuote *(gives user a random quote)* <br>
+#### Stock
+!pp stock {ticker} *(returns the live ticker, company name, exchange, current price, today high, and today low)*
 
 #### Music
-b!join *(music bot joins the user voice channel)* <br>
-b!leave *(music bot leaves the user voice channel)* <br>
-b!play *(music bot joins and plays music // if music already playing, add to queue)* <br>
-b!skip *(music bot skips to next music in the queue)* <br>
+!pp play {youtube link} *(joins your voice channel and plays the link)*
+!pp play {spotify link} *(uses the Spotify track title to find the closest playable match)*
+!pp play {title} *(searches YouTube for the closest match and plays it)*
+!pp continue *(resumes paused audio)*
+!pp queue *(shows the current track and the next few tracks waiting)*
+!pp pause *(pauses the current track)*
+!pp skip *(skips the current track and starts the next one)*
+!pp disconnect *(disconnects the bot from voice)*
+
+## Setup
+Install dependencies with `python -m pip install -r requirements.txt`.
+You also need `ffmpeg` installed and available on your `PATH` for voice playback.
